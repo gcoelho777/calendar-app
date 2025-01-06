@@ -1,0 +1,65 @@
+<div class="min-h-screen flex flex-col items-center bg-gray-100 p-4">
+    <div class="w-full max-w-4xl bg-white p-6 rounded-lg shadow-md">
+      
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Lista de Eventos</h2>
+        <div class="flex space-x-4">
+          <button 
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600" 
+            [routerLink]="['/evento/criar-evento']">
+            Novo Evento
+          </button>
+          <button 
+            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600" 
+            (click)="logout()">
+            Logout
+          </button>
+        </div>
+      </div>
+      
+      <ul class="space-y-4">
+        <li *ngFor="let event of events" 
+            class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row items-start md:items-center justify-between">
+          
+          <div class="flex-1 mb-4 md:mb-0">
+            <strong class="block text-xl mb-1">{{ event.description }}</strong>
+            <span class="block text-gray-700 mb-1">Autor: {{ event.user.name }}</span>
+            <div class="text-gray-500">
+              <span class="block">
+                <span class="font-semibold">Início:</span>
+                <span class="ml-1">{{ event.start_time | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </span>
+              <span class="block">
+                <span class="font-semibold">Término:</span>
+                <span class="ml-1">{{ event.end_time | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </span>
+              <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     class="h-5 w-5 mr-1 text-gray-600" 
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="font-semibold">Duração:</span>
+                <span class="ml-1">{{ calculateDuration(event.start_time, event.end_time) }}</span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="flex space-x-3 w-full md:w-auto">
+            <button 
+              class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full md:w-auto" 
+              [routerLink]="['/evento/atualizar-evento', event.id]">
+              Atualizar
+            </button>
+            <button 
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 w-full md:w-auto" 
+              (click)="confirmDelete(event.id)">
+              Excluir
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
