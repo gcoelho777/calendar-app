@@ -5,12 +5,11 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { UserShowComponent } from './components/user-show/user-show.component';
 import { UserUpdateComponent } from './components/user-update/user-update.component';
 import { UserDestroyComponent } from './components/user-destroy/user-destroy.component';
-import { EventListComponent } from './components/event-list/event-list.component';
-import { EventCreateComponent } from './components/event-create/event-create.component';
-import { EventUpdateComponent } from './components/event-update/event-update.component';
-import { EventDeleteComponent } from './components/event-delete/event-delete.component';
+import { EventCreateComponent } from './components/events/event-create/event-create.component';
+import { EventUpdateComponent } from './components/events/event-update/event-update.component';
 import { authGuard } from './guards/auth.guard';
 import { NoAuthGuard } from './guards/auth.no-guard';
+import { EventListComponent } from './components/events/event-list/event-list.component';
 
 
 export const routes: Routes = [
@@ -22,7 +21,6 @@ export const routes: Routes = [
     {   path: 'evento/lista-eventos', component: EventListComponent, canActivate: [authGuard]},
     {   path: 'evento/criar-evento', component: EventCreateComponent, canActivate: [authGuard]},
     {   path: 'evento/atualizar-evento/:id', component: EventUpdateComponent, canActivate: [authGuard]},
-    {   path: 'evento/excluir-evento/:id', component: EventDeleteComponent},
     {   path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 

@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $events = Event::where('user_id', auth()->user()->id)
@@ -18,16 +15,19 @@ class EventController extends Controller
         return response()->json($events);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'description' => 'required|string|max:255',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date|after:start_time'
+                'description' => 'required|string|max:255',
+                'start_time' => 'required|date|after_or_equal:now',
+                'end_time' => 'required|date|after:start_time',
+        ],[
+                'start_time.after_or_equal' => 'A data de início deve ser hoje ou uma data futura.',
+                'end_time.after' => 'A data de término deve ser posterior à data de início.',
+                'description.required' => 'A descrição do evento é obrigatória.'
         ]);
+
+
 
         $conflict = Event::where('user_id', auth()->user()->id)
                     ->where(function($query) use ($validated) {
@@ -49,9 +49,6 @@ class EventController extends Controller
         return response()->json($event, 201);    
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $event = Event::where('id', $id)->where('user_id', '=', auth()->user()->id)->firstOrFail();
@@ -59,18 +56,20 @@ class EventController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
             'description' => 'sometimes|required|string|max:255',
-            'start_time' => 'sometimes|required|date',
+            'start_time' => 'sometimes|required|date|after_or_equal:now',
             'end_time' => 'sometimes|required|date|after_or_equal:start_time'
-        ]);
+        ],[
+            'start_time.after_or_equal' => 'A data de início deve ser hoje ou uma data futura.',
+            'end_time.after' => 'A data de término deve ser posterior à data de início.',
+            'description.required' => 'A descrição do evento é obrigatória.'
+    ]);
 
         $conflict = Event::where('user_id', auth()->user()->id)
+                    ->where('id', '!=', $id)
                     ->where(function($query) use ($validated) {
                         $query->whereBetween('start_time', [$validated['start_time'], $validated['end_time']])
                         ->orWhereBetween('end_time', [$validated['start_time'], $validated['end_time']])
@@ -93,9 +92,6 @@ class EventController extends Controller
         return response()->json($event);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $event = Event::where('id', $id)

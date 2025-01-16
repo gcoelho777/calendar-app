@@ -1,0 +1,60 @@
+.header {
+    background-color: #e3f2fd;
+    /* Azul claro */
+    padding: 15px 30px;
+    /* Espaçamento interno */
+    display: flex;
+    justify-content: center;
+    /* Centraliza os links */
+    gap: 20px;
+    /* Espaçamento entre os links */
+    align-items: center;
+    /* Alinha os itens verticalmente */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra leve */
+}
+
+a {
+    cursor: pointer;
+}
+
+/* Links do Header */
+.header-link {
+    text-decoration: none;
+    /* Remove o sublinhado */
+    color: #1565c0;
+    /* Azul escuro */
+    font-size: 18px;
+    /* Texto maior */
+    font-weight: 500;
+    /* Peso da fonte */
+    transition: color 0.3s, transform 0.2s;
+    /* Animações suaves */
+}
+
+/* Hover nos Links */
+.header-link:hover {
+    color: #0d47a1;
+    /* Azul mais escuro ao passar o mouse */
+    transform: scale(1.1);
+    /* Leve aumento */
+    text-decoration: underline;
+    /* Adiciona sublinhado */
+}
+
+/* Responsivo (pequenos dispositivos) */
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        /* Empilha os links em telas pequenas */
+        gap: 10px;
+        /* Reduz o espaçamento */
+    }
+
+    .header-link {
+        font-size: 16px;
+        /* Texto menor */
+    }
+}

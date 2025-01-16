@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { EventService } from '../../services/event.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
+import { EventService } from '../../../services/event.service';
 
 @Component({
   selector: 'app-event-list',
@@ -27,29 +27,23 @@ export class EventListComponent implements OnInit {
                 this.events = events; 
             }); 
 
-
             return;
         }
-
-
     } 
 
-    confirmDelete(id: string | null): void {
-        if(confirm('Tem certeza que deseja excluir este evento?')) {
-            this.deleteEvent(id);
-        }
+    // Função de exclusão
+  deleteEvent(eventId: null | string): void {
+    if (confirm('Tem certeza de que deseja excluir este evento?')) {
+      this.eventService.deleteEvent(eventId).subscribe(() => {
+        // Atualize a lista de eventos após a exclusão
+        this.events = this.events.filter((event: { id: string | null; }) => event.id !== eventId);
+        alert('Evento excluído com sucesso');
+      }, (error) => {
+        console.error('Erro ao excluir evento', error);
+        alert('Erro ao excluir evento');
+      });
     }
-    
-    deleteEvent(id: string | null): void { 
-        if(this.authService.isAuthenticated()) {
-            this.eventService.deleteEvent(id).subscribe(() => { 
-                console.log('Evento excluido com sucesso'); 
-                this.loadEvents();
-                }, error => { console.error('Erro ao excluir evento', error); 
-            }); 
-        }
-        this.router.navigate(['/registrar']);
-    }
+}
 
     calculateDuration(start_time: string, end_time: string): string {
         const startTime = new Date(start_time);
@@ -61,10 +55,4 @@ export class EventListComponent implements OnInit {
         return `${hours}h ${minutes}min`;
     } 
 
-    logout(): void {
-        if (typeof window !== 'undefined') {
-            localStorage.removeItem('access_token');
-            this.router.navigate(['/registrar']);
-        }
-    }
 }

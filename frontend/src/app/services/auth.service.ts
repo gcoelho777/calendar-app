@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://127.0.0.1:8000/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router  ) { }
 
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/registrar`, userData);
@@ -42,7 +43,12 @@ export class AuthService {
     return this.http.delete(`${this.apiUrl}/usuario`, {headers});
   }
 
-
+  logout(): void {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('access_token');
+        this.router.navigate(['/registrar']);
+    }
+}
 
   isAuthenticated(): boolean {
     if (typeof window !== 'undefined') {

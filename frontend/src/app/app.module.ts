@@ -7,12 +7,14 @@ import { LoginComponent } from "./components/auth/login/login.component";
 import { RegisterComponent } from "./components/auth/register/register.component";
 import { FormsModule } from "@angular/forms"
 import { CommonModule } from "@angular/common";
+import { HeaderComponent } from "./components/templates/header/header.component";
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        HeaderComponent,
     ],
     imports: [
         BrowserModule,

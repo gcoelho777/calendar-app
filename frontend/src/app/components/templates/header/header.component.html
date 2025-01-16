@@ -1,0 +1,12 @@
+<div class="header">
+    <ng-container *ngIf="isLoggedIn; else loggedOut">
+      <a routerLink="evento/lista-eventos" class="header-link">Eventos</a>
+      <a routerLink="usuario/perfil" class="header-link">Perfil</a>
+      <a (click)="logout()" class="header-link">Logout</a>
+    </ng-container>
+    <ng-template #loggedOut>
+      <a routerLink="/login" class="header-link">Login</a>
+      <a routerLink="/registrar" class="header-link">Registrar</a>
+      <a routerLink="/sobre" class="header-link">Sobre</a>
+    </ng-template>
+  </div>
